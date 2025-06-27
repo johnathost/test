@@ -15,15 +15,13 @@ fi
 echo "Updating package list..."
 apt update
 
-sudo apt install libconfig-dev build-essential dpkg-dev libpulse-dev libx11-dev libxfixes-dev libssl-dev libpam0g-dev libtool libjpeg-dev flex bison gettext autoconf libxml-parser-perl libfuse-dev xsltproc libxrandr-dev python3-libxml2 nasm fuse pkg-config git intltool checkinstall -y
-
 ###############################################################################
 # XRDP
 #
 
 # Install required packages for Hyper-V Enhanced Session Mode
 echo "Installing hyperv-daemons and xrdp..."
-apt install -y hyperv-daemons xrdp
+apt install -y hyperv-daemons xrdp xorgxrdp
 
 # Configure the installed XRDP ini files.
 # use vsock transport.
@@ -57,9 +55,17 @@ sed -i -e 's/FuseMountName=thinclient_drives/FuseMountName=shared-drives/g' /etc
 # Changed the allowed_users
 sed -i_orig -e 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config
 
-#Ensure hv_sock gets loaded
-if [ ! -e /etc/modules-load.d/hv_sock.conf ]; then
-echo "hv_sock" > /etc/modules-load.d/hv_sock.conf
+# Load Hyper-V Kernal Modules
+if [ ! -e /etc/modules-load.d/hyperv.conf ]; then
+cat << EOF > /etc/modules-load.d/hyperv.conf
+hv_sock
+hv_vmbus
+hv_storvsc
+hv_blkvsc
+hv_netvsc
+hv_utils
+hv_balloon
+EOF
 fi
 
 # reconfigure the service
@@ -76,19 +82,18 @@ systemctl start xrdp
 # Pulseaudio
 #
 
+sudo apt install build-essential dpkg-dev libpulse-dev git autoconf libtool libltdl-dev
+
+cd ~
+
 git clone https://github.com/neutrinolabs/pulseaudio-module-xrdp.git
-cd pulseaudio-module-xrdp/scripts
+cd pulseaudio-module-xrdp
 
-sudo ./install_pulseaudio_sources_apt_wrapper.sh
+sudo scripts/install_pulseaudio_sources_apt_wrapper.sh 
 
-cd ..
-
-sudo ./bootstrap
-sudo ./configure
+sudo ./bootstrap && ./configure PULSE_DIR=$HOME/pulseaudio.src
 sudo make
 sudo make install
-
-pulseaudio &
 
 #
 # End Pulseaudio
