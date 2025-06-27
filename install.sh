@@ -79,7 +79,7 @@ cd pulseaudio-module-xrdp/scripts
 
 sudo ./install_pulseaudio_sources_apt_wrapper.sh
 
-cd pulseaudio-module-xrdp
+cd ..
 
 sudo ./bootstrap
 sudo ./configure PULSE_DIR="/tmp/pulseaudio"
