@@ -84,7 +84,7 @@ sudo ./install_pulseaudio_sources_apt_wrapper.sh
 cd ..
 
 sudo ./bootstrap
-sudo ./configure PULSE_DIR="/tmp/pulseaudio"
+sudo ./configure
 sudo make
 sudo make install
 
