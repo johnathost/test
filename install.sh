@@ -82,7 +82,7 @@ systemctl start xrdp
 # Pulseaudio
 #
 
-sudo apt install build-essential dpkg-dev libpulse-dev git autoconf libtool libltdl-dev
+sudo apt install -y build-essential dpkg-dev libpulse-dev git autoconf libtool libltdl-dev
 
 cd ~
 
