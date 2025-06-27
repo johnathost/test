@@ -15,6 +15,8 @@ fi
 echo "Updating package list..."
 apt update
 
+sudo apt install libconfig-dev build-essential dpkg-dev libpulse-dev libx11-dev libxfixes-dev libssl-dev libpam0g-dev libtool libjpeg-dev flex bison gettext autoconf libxml-parser-perl libfuse-dev xsltproc libxrandr-dev python3-libxml2 nasm fuse pkg-config git intltool checkinstall -y
+
 ###############################################################################
 # XRDP
 #
