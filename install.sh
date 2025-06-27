@@ -74,24 +74,17 @@ systemctl start xrdp
 # Pulseaudio
 #
 
-pulsever=$(pulseaudio --version | awk '{print $2}')
-
-sudo apt build-dep pulseaudio -y
-
-cd /tmp
-sudo apt source pulseaudio=$pulsever
-cd /tmp/pulseaudio-$pulsever
-sudo ./configure
-
 git clone https://github.com/neutrinolabs/pulseaudio-module-xrdp.git
-cd pulseaudio-module-xrdp
-sudo ./bootstrap
-sudo ./configure PULSE_DIR="/tmp/pulseaudio-$pulsever"
-sudo make
+cd pulseaudio-module-xrdp/scripts
 
-cd /tmp/pulseaudio-$pulsever/pulseaudio-module-xrdp/src/.libs
-sudo install -t "/var/lib/xrdp-pulseaudio-installer" -D -m 644 *.so
-sudo install -t "/usr/lib/pulse-$pulsever/modules" -D -m 644 *.so
+sudo ./install_pulseaudio_sources_apt_wrapper.sh
+
+sudo ./bootstrap
+sudo ./configure PULSE_DIR="/tmp/pulseaudio"
+sudo make
+sudo make install
+
+pulseaudio &
 
 #
 # End Pulseaudio
