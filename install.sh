@@ -89,7 +89,7 @@ cd ~
 git clone https://github.com/neutrinolabs/pulseaudio-module-xrdp.git
 cd pulseaudio-module-xrdp
 
-sudo scripts/install_pulseaudio_sources_apt_wrapper.sh 
+sudo scripts/install_pulseaudio_sources_apt_wrapper.sh
 
 sudo ./bootstrap && ./configure PULSE_DIR=$HOME/pulseaudio.src
 sudo make
