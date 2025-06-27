@@ -35,17 +35,6 @@ sed -i_orig -e 's/crypt_level=high/crypt_level=none/g' /etc/xrdp/xrdp.ini
 # disable bitmap compression since its local its much faster
 sed -i_orig -e 's/bitmap_compression=true/bitmap_compression=false/g' /etc/xrdp/xrdp.ini
 
-# Add script to setup the debian session properly
-if [ ! -e /etc/xrdp/startdebian.sh ]; then
-cat >> /etc/xrdp/startdebian.sh << EOF
-#!/bin/sh
-export GNOME_SHELL_SESSION_MODE=debian
-export XDG_CURRENT_DESKTOP=debian:GNOME
-exec /etc/xrdp/startwm.sh
-EOF
-chmod a+x /etc/xrdp/startdebian.sh
-fi
-
 # use the script to setup the debian session
 sed -i_orig -e 's/startwm/startdebian/g' /etc/xrdp/sesman.ini
 
